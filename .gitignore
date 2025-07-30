@@ -1,3 +1,6 @@
+/node_modules/
+.DS_Store
+/.vscode/
 /nbproject/
 /.idea/*
 *.tmlanguage.cache

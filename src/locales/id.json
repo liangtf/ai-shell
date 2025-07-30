@@ -4,14 +4,14 @@
   "send a message ('exit' to quit)": "kirim pesan ('exit' untuk keluar)",
   "Please enter a prompt.": "Silakan masukkan permintaan.",
   "THINKING...": "BERPIKIR...",
-  "Please set your OpenAI API key via ai config set OPENAI_KEY=<your token>": "Harap atur kunci API OpenAI Anda melalui ai config set OPENAI_KEY=<token Anda>",
+  "Please set your AI API key via `ai config set AI_API_KEY=<your token>`": "Harap atur kunci API AI Anda melalui `ai config set AI_API_KEY=<token Anda>`",
   "Set config": "Atur konfigurasi",
-  "Enter your OpenAI API key": "Masukkan kunci API OpenAI Anda",
+  "Enter your AI API key": "Masukkan kunci API AI Anda",
   "(not set)": "(belum diatur)",
-  "OpenAI Key": "Kunci OpenAI",
+  "AI API Key": "Kunci API AI",
   "Please enter a key": "Silakan masukkan kunci",
-  "OpenAI API Endpoint": "Titik Akhir API OpenAI",
-  "Enter your OpenAI API Endpoint": "Masukkan Titik Akhir API OpenAI Anda",
+  "AI API Endpoint": "Titik Akhir API AI",
+  "Enter your AI API Endpoint": "Masukkan Titik Akhir API AI Anda",
   "Silent Mode": "Mode Senyap",
   "Enable silent mode?": "Aktifkan mode senyap?",
   "Model": "Model",
@@ -54,5 +54,7 @@
   "Missing required parameter": "Parameter yang diperlukan hilang",
   "Please open a Bug report with the information above": "Harap buka laporan Bug dengan informasi di atas",
   "Prompt to run": "Permintaan untuk dijalankan",
-  "You": "Anda"
+  "You": "Anda",
+  "AI Provider": "Penyedia AI",
+  "Select your AI Provider": "Pilih Penyedia AI Anda"
 }

@@ -1,9 +1,10 @@
 {
   "name": "@builder.io/ai-shell",
   "description": "A CLI that converts natural language to shell commands.",
-  "version": "1.0.12",
+  "version": "1.0.16",
   "type": "module",
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.57.0",
     "@clack/core": "latest",
     "@clack/prompts": "latest",
     "@dqbd/tiktoken": "^1.0.2",

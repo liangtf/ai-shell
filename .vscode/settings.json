@@ -1,3 +1,7 @@
 {
-  "cSpell.words": ["execa", "kolorist"]
+  "cSpell.words": [
+    "execa",
+    "kolorist"
+  ],
+  "kiroAgent.configureMCP": "Disabled"
 }

@@ -4,14 +4,14 @@
   "send a message ('exit' to quit)": "發送消息（'exit' 退出）",
   "Please enter a prompt.": "請輸入提示語",
   "THINKING...": "思考中...",
-  "Please set your OpenAI API key via `ai config set OPENAI_KEY=<your token>`": "請通過 `ai config set OPENAI_KEY=<your token>` 設置您的 OpenAI API 密鑰",
+  "Please set your AI API key via `ai config set AI_API_KEY=<your token>`": "請通過 `ai config set AI_API_KEY=<your token>` 設置您的 AI API 密鑰",
   "Set config": "設置配置",
-  "Enter your OpenAI API key": "輸入您的 OpenAI API 密鑰",
+  "Enter your AI API key": "輸入您的 AI API 密鑰",
   "(not set)": "（未設置）",
-  "OpenAI Key": "OpenAI 密鑰",
+  "AI API Key": "AI API 密鑰",
   "Please enter a key": "請輸入密鑰",
-  "OpenAI API Endpoint": "OpenAI API 端點",
-  "Enter your OpenAI API Endpoint": "輸入您的 OpenAI API 端點",
+  "AI API Endpoint": "AI API 端點",
+  "Enter your AI API Endpoint": "輸入您的 AI API 端點",
   "Silent Mode": "靜默模式",
   "Enable silent mode?": "啟用靜默模式？",
   "Model": "模型",
@@ -54,5 +54,7 @@
   "Missing required parameter": "缺少必需的參數",
   "Please open a Bug report with the information above": "請使用上面的信息打開 Bug 報告",
   "Prompt to run": "要運行的提示語",
-  "You": "您"
+  "You": "您",
+  "AI Provider": "AI 提供商",
+  "Select your AI Provider": "選擇您的 AI 提供商"
 }

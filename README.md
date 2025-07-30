@@ -34,14 +34,22 @@
    npm install -g @builder.io/ai-shell
    ```
 
-2. Retrieve your API key from [OpenAI](https://platform.openai.com/account/api-keys)
+2. Get your API key from either:
+   - [OpenAI](https://platform.openai.com/account/api-keys) for GPT models
+   - [Anthropic](https://console.anthropic.com/) for Claude models
 
-   > Note: If you haven't already, you'll have to create an account and set up billing.
+   > Note: You'll need to create an account and set up billing with your chosen provider.
 
-3. Set the key so ai-shell can use it:
+3. Configure ai-shell with your API key and provider:
 
    ```sh
-   ai config set OPENAI_KEY=<your token>
+   # For OpenAI (default)
+   ai config set AI_API_KEY=<your openai token>
+   ai config set AI_PROVIDER=openai
+   
+   # For Anthropic Claude
+   ai config set AI_API_KEY=<your anthropic token>
+   ai config set AI_PROVIDER=anthropic
    ```
 
    This will create a `.ai-shell` file in your home directory.
@@ -65,6 +73,26 @@ Then you will get an output like this, where you can choose to run the suggested
 │
 │  find . -name "*.log"
 │
+◆  Run this script?
+│  ● ✅ Yes (Lets go!)
+│  ○ 📝 Revise
+│  ○ ❌ Cancel
+└
+```
+
+To see detailed explanations, use the `-e` flag:
+
+```bash
+ai -e list all log files
+```
+
+This will show:
+
+```bash
+◇  Your script:
+│
+│  find . -name "*.log"
+│
 ◇  Explanation:
 │
 │  1. Searches for all files with the extension ".log" in the current directory and any subdirectories.
@@ -75,6 +103,15 @@ Then you will get an output like this, where you can choose to run the suggested
 │  ○ ❌ Cancel
 └
 ```
+
+### Command flags
+
+AI Shell supports several command-line flags:
+
+- `-e, --explain`: Show detailed explanations (verbose mode)  
+- `-p, --prompt <string>`: Specify prompt directly as argument
+- `--version`: Show version information
+- `--help`: Show help information
 
 ### Special characters
 
@@ -113,26 +150,30 @@ app.get('/oldurl', (req, res) => {
 \`\`\`
 ```
 
-### Silent mode (skip explanations)
+### Explanation mode (show detailed explanations)
 
-You can disable and skip the explanation section by using the flag `-s` or `--silent`
+By default, AI Shell runs in silent mode (shows only the generated command). You can enable detailed explanations using the `-e` or `--explain` flag:
 
 ```bash
-ai -s list all log files
+ai -e list all log files
 ```
 
-or save the option as a preference using this command:
+or save verbose mode as a preference using this command:
 
 ```bash
-ai config set SILENT_MODE=true
+ai config set SILENT_MODE=false
 ```
 
 ### Custom API endpoint
 
-You can custom OpenAI API endpoint to set OPENAI_API_ENDPOINT（default: `https://api.openai.com/v1`）
+You can set a custom API endpoint (useful for proxies or alternative endpoints):
 
 ```sh
-ai config set OPENAI_API_ENDPOINT=<your proxy endpoint>
+# For OpenAI (default: https://api.openai.com/v1)
+ai config set AI_API_ENDPOINT=<your proxy endpoint>
+
+# For Anthropic (default: https://api.anthropic.com)
+ai config set AI_API_ENDPOINT=<your proxy endpoint>
 ```
 
 ### Set Language
@@ -178,8 +219,9 @@ To get an interactive UI like below:
 
 ```bash
 ◆  Set config:
-│  ○ OpenAI Key
-│  ○ OpenAI API Endpoint
+│  ○ AI API Key
+│  ○ AI Provider
+│  ○ AI API Endpoint
 │  ○ Silent Mode
 │  ● Model (gpt-4o-mini)
 │  ○ Language
@@ -211,9 +253,11 @@ ai update
 
 ### 429 error
 
-Some users are reporting a 429 from OpenAI. This is due to incorrect billing setup or excessive quota usage. Please follow [this guide](https://help.openai.com/en/articles/6891831-error-code-429-you-exceeded-your-current-quota-please-check-your-plan-and-billing-details) to fix it.
+Some users are reporting a 429 error from their AI provider. This is due to incorrect billing setup or excessive quota usage.
 
-You can activate billing at [this link](https://platform.openai.com/account/billing/overview). Make sure to add a payment method if not under an active grant from OpenAI.
+**For OpenAI:** Please follow [this guide](https://help.openai.com/en/articles/6891831-error-code-429-you-exceeded-your-current-quota-please-check-your-plan-and-billing-details) to fix it. You can activate billing at [this link](https://platform.openai.com/account/billing/overview).
+
+**For Anthropic:** Check your usage and billing at [Anthropic Console](https://console.anthropic.com/).
 
 ## Motivation
 
@@ -223,10 +267,16 @@ I am not a bash wizard, and am dying for access to the copilot CLI, and got impa
 
 If you want to help fix a bug or implement a feature in [Issues](https://github.com/BuilderIO/ai-shell/issues) (tip: look out for the `help wanted` label), checkout the [Contribution Guide](CONTRIBUTING.md) to learn how to setup the project.
 
+## Supported AI Providers
+
+- **OpenAI**: GPT-4, GPT-4o, GPT-4o-mini, and other OpenAI models
+- **Anthropic**: Claude 3.5 Sonnet, Claude 3 Haiku, Claude 3 Opus
+
 ## Credit
 
 - Thanks to GitHub Copilot for their amazing tools and the idea for this.
 - Thanks to Hassan and his work on [aicommits](https://github.com/Nutlope/aicommits), which inspired the workflow and some parts of the code and flows
+- Thanks to Anthropic for providing Claude AI capabilities
 
 <br><br>
 

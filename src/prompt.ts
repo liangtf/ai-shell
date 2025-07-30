@@ -102,15 +102,19 @@ export async function prompt({
   silentMode,
 }: { usePrompt?: string; silentMode?: boolean } = {}) {
   const {
-    OPENAI_KEY: key,
+    AI_API_KEY: key,
     SILENT_MODE,
-    OPENAI_API_ENDPOINT: apiEndpoint,
+    AI_API_ENDPOINT: apiEndpoint,
     MODEL: model,
+    AI_PROVIDER: provider,
   } = await getConfig();
   const skipCommandExplanation = silentMode || SILENT_MODE;
 
   console.log('');
   p.intro(`${cyan(`${projectName}`)}`);
+  
+  // Debug: Show which provider and model we're using
+  console.log(`🤖 Provider: ${provider}, Model: ${model}`);
 
   const thePrompt = usePrompt || (await getPrompt());
   const spin = p.spinner();
@@ -120,6 +124,7 @@ export async function prompt({
     key,
     model,
     apiEndpoint,
+    provider,
   });
   spin.stop(`${i18n.t('Your script')}:`);
   console.log('');
@@ -136,6 +141,7 @@ export async function prompt({
         key,
         model,
         apiEndpoint,
+        provider,
       });
       spin.stop(`${i18n.t('Explanation')}:`);
       console.log('');
@@ -146,7 +152,7 @@ export async function prompt({
     }
   }
 
-  await runOrReviseFlow(script, key, model, apiEndpoint, silentMode);
+  await runOrReviseFlow(script, key, model, apiEndpoint, provider, silentMode);
 }
 
 async function runOrReviseFlow(
@@ -154,6 +160,7 @@ async function runOrReviseFlow(
   key: string,
   model: string,
   apiEndpoint: string,
+  provider: 'openai' | 'anthropic',
   silentMode?: boolean
 ) {
   const emptyScript = script.trim() === '';
@@ -191,7 +198,7 @@ async function runOrReviseFlow(
         label: '🔁 ' + i18n.t('Revise'),
         hint: i18n.t('Give feedback via prompt and get a new result'),
         value: async () => {
-          await revisionFlow(script, key, model, apiEndpoint, silentMode);
+          await revisionFlow(script, key, model, apiEndpoint, provider, silentMode);
         },
       },
       {
@@ -223,6 +230,7 @@ async function revisionFlow(
   key: string,
   model: string,
   apiEndpoint: string,
+  provider: 'openai' | 'anthropic',
   silentMode?: boolean
 ) {
   const revision = await promptForRevision();
@@ -234,6 +242,7 @@ async function revisionFlow(
     key,
     model,
     apiEndpoint,
+    provider,
   });
   spin.stop(`${i18n.t(`Your new script`)}:`);
 
@@ -251,6 +260,7 @@ async function revisionFlow(
       key,
       model,
       apiEndpoint,
+      provider,
     });
 
     infoSpin.stop(`${i18n.t('Explanation')}:`);
@@ -261,7 +271,7 @@ async function revisionFlow(
     console.log(dim('•'));
   }
 
-  await runOrReviseFlow(script, key, model, apiEndpoint, silentMode);
+  await runOrReviseFlow(script, key, model, apiEndpoint, provider, silentMode);
 }
 
 export const parseAssert = (name: string, condition: any, message: string) => {

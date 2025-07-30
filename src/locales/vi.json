@@ -4,14 +4,14 @@
   "send a message ('exit' to quit)": "gửi tin nhắn ('exit' để thoát)",
   "Please enter a prompt.": "Vui lòng nhập một lời nhắn.",
   "THINKING...": "ĐANG SUY NGHĨ...",
-  "Please set your OpenAI API key via `ai config set OPENAI_KEY=<your token>`": "Vui lòng thiết lập khóa API OpenAI của bạn thông qua `ai config set OPENAI_KEY=<your token>`",
+  "Please set your AI API key via `ai config set AI_API_KEY=<your token>`": "Vui lòng thiết lập khóa API AI của bạn thông qua `ai config set AI_API_KEY=<your token>`",
   "Set config": "Cài đặt cấu hình",
-  "Enter your OpenAI API key": "Nhập khóa API OpenAI của bạn",
+  "Enter your AI API key": "Nhập khóa API AI của bạn",
   "(not set)": "(không được đặt)",
-  "OpenAI Key": "Khóa OpenAI",
+  "AI API Key": "Khóa API AI",
   "Please enter a key": "Vui lòng nhập một khóa",
-  "OpenAI API Endpoint": "Điểm cuối API OpenAI",
-  "Enter your OpenAI API Endpoint": "Nhập Điểm cuối API OpenAI của bạn",
+  "AI API Endpoint": "Điểm cuối API AI",
+  "Enter your AI API Endpoint": "Nhập Điểm cuối API AI của bạn",
   "Silent Mode": "Chế độ im lặng",
   "Enable silent mode?": "Bật chế độ im lặng?",
   "Model": "Mô hình",
@@ -54,5 +54,7 @@
   "Missing required parameter": "Thiếu tham số bắt buộc",
   "Please open a Bug report with the information above": "Vui lòng mở một báo cáo lỗi với thông tin ở trên",
   "Prompt to run": "Lời nhắc để chạy",
-  "You": "Bạn"
+  "You": "Bạn",
+  "AI Provider": "Nhà cung cấp AI",
+  "Select your AI Provider": "Chọn nhà cung cấp AI của bạn"
 }

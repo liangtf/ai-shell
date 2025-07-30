@@ -4,14 +4,14 @@
   "send a message ('exit' to quit)": "bir mesaj gönder (çıkmak için 'exit' yaz)",
   "Please enter a prompt.": "Lütfen bir bilgi istemi girin.",
   "THINKING...": "DÜŞÜNÜYOR...",
-  "Please set your OpenAI API key via `ai config set OPENAI_KEY=<your token>`": "Lütfen OpenAI anahtarınızı bunla ayarlayın `ai config set OPENAI_KEY=<sizin anahtarınız>`",
+  "Please set your AI API key via `ai config set AI_API_KEY=<your token>`": "Lütfen AI API anahtarınızı bunla ayarlayın `ai config set AI_API_KEY=<sizin anahtarınız>`",
   "Set config": "Yapılandırmayı ayarla",
-  "Enter your OpenAI API key": "OpenAI API anahtarınızı girin",
+  "Enter your AI API key": "AI API anahtarınızı girin",
   "(not set)": "(ayarlanmadı)",
-  "OpenAI Key": "OpenAI Anahtarınız",
+  "AI API Key": "AI API Anahtarınız",
   "Please enter a key": "Lütfen bir anahtar girin",
-  "OpenAI API Endpoint": "OpenAI API Uçnoktası",
-  "Enter your OpenAI API Endpoint": "OpenAI API Uçnoktanızı girin",
+  "AI API Endpoint": "AI API Uçnoktası",
+  "Enter your AI API Endpoint": "AI API Uçnoktanızı girin"
   "Silent Mode": "Sessiz Mod",
   "Enable silent mode?": "Sessiz mod etkinleştirilsin mi?",
   "Model": "Model",
@@ -54,5 +54,7 @@
   "Missing required parameter": "Gerekli parametre eksik",
   "Please open a Bug report with the information above": "Lütfen yukarıdaki bilgilerle bir Hata raporu açın",
   "Prompt to run": "Çalıştırma istemi",
-  "You": "Siz"
+  "You": "Siz",
+  "AI Provider": "AI Sağlayıcısı",
+  "Select your AI Provider": "AI sağlayıcınızı seçin"
 }

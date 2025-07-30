@@ -4,14 +4,14 @@
   "send a message ('exit' to quit)": "enviar uma mensagem ('exit' para sair)",
   "Please enter a prompt.": "Por favor, insira um prompt.",
   "THINKING...": "PENSANDO...",
-  "Please set your OpenAI API key via `ai config set OPENAI_KEY=<your token>`": "Por favor, defina sua chave de API OpenAI via `ai config set OPENAI_KEY=<your token>`",
+  "Please set your AI API key via `ai config set AI_API_KEY=<your token>`": "Por favor, defina sua chave de API AI via `ai config set AI_API_KEY=<your token>`",
   "Set config": "Definir configuração",
-  "Enter your OpenAI API key": "Insira sua chave de API OpenAI",
+  "Enter your AI API key": "Insira sua chave de API AI",
   "(not set)": "(não definido)",
-  "OpenAI Key": "Chave OpenAI",
+  "AI API Key": "Chave de API AI",
   "Please enter a key": "Por favor, insira uma chave",
-  "OpenAI API Endpoint": "Endpoint da API OpenAI",
-  "Enter your OpenAI API Endpoint": "Insira seu Endpoint da API OpenAI",
+  "AI API Endpoint": "Endpoint da API AI",
+  "Enter your AI API Endpoint": "Insira seu Endpoint da API AI",
   "Silent Mode": "Modo silencioso",
   "Enable silent mode?": "Ativar modo silencioso?",
   "Model": "Modelo",
@@ -54,5 +54,7 @@
   "Missing required parameter": "Parâmetro obrigatório faltando",
   "Please open a Bug report with the information above": "Por favor, abra um relatório de bug com as informações acima",
   "Prompt to run": "Prompt para executar",
-  "You": "Você"
+  "You": "Você",
+  "AI Provider": "Provedor de IA",
+  "Select your AI Provider": "Selecione seu provedor de IA"
 }

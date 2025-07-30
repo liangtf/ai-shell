@@ -18,16 +18,17 @@ cli(
         description: 'Prompt to run',
         alias: 'p',
       },
-      silent: {
+      explain: {
         type: Boolean,
-        description: 'Less verbose, skip printing the command explanation ',
-        alias: 's',
+        description: 'Show detailed explanations (verbose mode)',
+        alias: 'e',
       },
     },
     commands: [config, chat, update],
   },
   (argv) => {
-    const silentMode = argv.flags.silent;
+    // Default to silent mode, but -e/--explain flag enables verbose mode
+    const silentMode = !argv.flags.explain;
     const promptText = argv._.join(' ');
 
     if (promptText.trim() === 'update') {

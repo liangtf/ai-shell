@@ -29,18 +29,25 @@ const parseAssert = (name: string, condition: any, message: string) => {
 };
 
 const configParsers = {
-  OPENAI_KEY(key?: string) {
+  AI_API_KEY(key?: string) {
     if (!key) {
       throw new KnownError(
-        `Please set your OpenAI API key via \`${commandName} config set OPENAI_KEY=<your token>\`` // TODO: i18n
+        `Please set your AI API key via \`${commandName} config set AI_API_KEY=<your token>\`` // TODO: i18n
       );
     }
 
     return key;
   },
-  MODEL(model?: string) {
+  AI_PROVIDER(provider?: string) {
+    if (!provider || !['openai', 'anthropic'].includes(provider.toLowerCase())) {
+      return 'openai';
+    }
+    return provider.toLowerCase() as 'openai' | 'anthropic';
+  },
+  MODEL(model?: string, provider?: string) {
     if (!model || model.length === 0) {
-      return 'gpt-4o-mini';
+      // Return provider-specific default
+      return provider === 'anthropic' ? 'claude-sonnet-4-20250514' : 'gpt-4o-mini';
     }
 
     return model as TiktokenModel;
@@ -48,7 +55,7 @@ const configParsers = {
   SILENT_MODE(mode?: string) {
     return String(mode).toLowerCase() === 'true';
   },
-  OPENAI_API_ENDPOINT(apiEndpoint?: string) {
+  AI_API_ENDPOINT(apiEndpoint?: string) {
     return apiEndpoint || 'https://api.openai.com/v1';
   },
   LANGUAGE(language?: string) {
@@ -90,10 +97,14 @@ export const getConfig = async (
   const config = await readConfigFile();
   const parsedConfig: Record<string, unknown> = {};
 
+  // First parse the provider to use for MODEL defaults
+  const provider = configParsers.AI_PROVIDER(cliConfig?.AI_PROVIDER ?? config.AI_PROVIDER);
+
   for (const key of Object.keys(configParsers) as ConfigKeys[]) {
     const parser = configParsers[key];
     const value = cliConfig?.[key] ?? config[key];
-    parsedConfig[key] = parser(value);
+    // Pass provider context to MODEL parser
+    parsedConfig[key] = key === 'MODEL' ? parser(value, provider) : parser(value);
   }
 
   return parsedConfig as ValidConfig;
@@ -121,18 +132,25 @@ export const showConfigUI = async () => {
       message: i18n.t('Set config') + ':',
       options: [
         {
-          label: i18n.t('OpenAI Key'),
-          value: 'OPENAI_KEY',
-          hint: hasOwn(config, 'OPENAI_KEY')
+          label: i18n.t('AI API Key'),
+          value: 'AI_API_KEY',
+          hint: hasOwn(config, 'AI_API_KEY')
             ? // Obfuscate the key
-              'sk-...' + config.OPENAI_KEY.slice(-3)
+              (config.AI_API_KEY.startsWith('sk-') ? 'sk-...' : '...') + config.AI_API_KEY.slice(-3)
             : i18n.t('(not set)'),
         },
         {
-          label: i18n.t('OpenAI API Endpoint'),
-          value: 'OPENAI_API_ENDPOINT',
-          hint: hasOwn(config, 'OPENAI_API_ENDPOINT')
-            ? config.OPENAI_API_ENDPOINT
+          label: i18n.t('AI Provider'),
+          value: 'AI_PROVIDER',
+          hint: hasOwn(config, 'AI_PROVIDER')
+            ? config.AI_PROVIDER
+            : i18n.t('(not set)'),
+        },
+        {
+          label: i18n.t('AI API Endpoint'),
+          value: 'AI_API_ENDPOINT',
+          hint: hasOwn(config, 'AI_API_ENDPOINT')
+            ? config.AI_API_ENDPOINT
             : i18n.t('(not set)'),
         },
         {
@@ -164,9 +182,9 @@ export const showConfigUI = async () => {
 
     if (p.isCancel(choice)) return;
 
-    if (choice === 'OPENAI_KEY') {
+    if (choice === 'AI_API_KEY') {
       const key = await p.text({
-        message: i18n.t('Enter your OpenAI API key'),
+        message: i18n.t('Enter your AI API key'),
         validate: (value) => {
           if (!value.length) {
             return i18n.t('Please enter a key');
@@ -174,13 +192,23 @@ export const showConfigUI = async () => {
         },
       });
       if (p.isCancel(key)) return;
-      await setConfigs([['OPENAI_KEY', key]]);
-    } else if (choice === 'OPENAI_API_ENDPOINT') {
+      await setConfigs([['AI_API_KEY', key]]);
+    } else if (choice === 'AI_PROVIDER') {
+      const provider = (await p.select({
+        message: i18n.t('Select your AI Provider'),
+        options: [
+          { value: 'openai', label: 'OpenAI' },
+          { value: 'anthropic', label: 'Anthropic (Claude)' },
+        ],
+      })) as string;
+      if (p.isCancel(provider)) return;
+      await setConfigs([['AI_PROVIDER', provider]]);
+    } else if (choice === 'AI_API_ENDPOINT') {
       const apiEndpoint = await p.text({
-        message: i18n.t('Enter your OpenAI API Endpoint'),
+        message: i18n.t('Enter your AI API Endpoint'),
       });
       if (p.isCancel(apiEndpoint)) return;
-      await setConfigs([['OPENAI_API_ENDPOINT', apiEndpoint]]);
+      await setConfigs([['AI_API_ENDPOINT', apiEndpoint]]);
     } else if (choice === 'SILENT_MODE') {
       const silentMode = await p.confirm({
         message: i18n.t('Enable silent mode?'),
@@ -188,9 +216,9 @@ export const showConfigUI = async () => {
       if (p.isCancel(silentMode)) return;
       await setConfigs([['SILENT_MODE', silentMode ? 'true' : 'false']]);
     } else if (choice === 'MODEL') {
-      const { OPENAI_KEY: key, OPENAI_API_ENDPOINT: apiEndpoint } =
+      const { AI_API_KEY: key, AI_API_ENDPOINT: apiEndpoint, AI_PROVIDER: provider } =
         await getConfig();
-      const models = await getModels(key, apiEndpoint);
+      const models = await getModels(key, apiEndpoint, provider);
       const model = (await p.select({
         message: 'Pick a model.',
         options: models.map((m: Model) => {

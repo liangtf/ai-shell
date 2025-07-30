@@ -4,14 +4,14 @@
   "send a message ('exit' to quit)": "send a message ('exit' to quit)",
   "Please enter a prompt.": "Please enter a prompt.",
   "THINKING...": "THINKING...",
-  "Please set your OpenAI API key via `ai config set OPENAI_KEY=<your token>`": "Please set your OpenAI API key via `ai config set OPENAI_KEY=<your token>`",
+  "Please set your AI API key via `ai config set AI_API_KEY=<your token>`": "Please set your AI API key via `ai config set AI_API_KEY=<your token>`",
   "Set config": "Set config",
-  "Enter your OpenAI API key": "Enter your OpenAI API key",
+  "Enter your AI API key": "Enter your AI API key",
   "(not set)": "(not set)",
-  "OpenAI Key": "OpenAI Key",
+  "AI API Key": "AI API Key",
   "Please enter a key": "Please enter a key",
-  "OpenAI API Endpoint": "OpenAI API Endpoint",
-  "Enter your OpenAI API Endpoint": "Enter your OpenAI API Endpoint",
+  "AI API Endpoint": "AI API Endpoint",
+  "Enter your AI API Endpoint": "Enter your AI API Endpoint",
   "Silent Mode": "Silent Mode",
   "Enable silent mode?": "Enable silent mode?",
   "Model": "Model",
@@ -54,5 +54,7 @@
   "Missing required parameter": "Missing required parameter",
   "Please open a Bug report with the information above": "Please open a Bug report with the information above",
   "Prompt to run": "Prompt to run",
-  "You": "You"
+  "You": "You",
+  "AI Provider": "AI Provider",
+  "Select your AI Provider": "Select your AI Provider"
 }

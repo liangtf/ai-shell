@@ -4,14 +4,14 @@
   "send a message ('exit' to quit)": "envoyer un message ('exit' pour quitter)",
   "Please enter a prompt.": "Veuillez entrer une invite.",
   "THINKING...": "EN RÉFLEXION...",
-  "Please set your OpenAI API key via `ai config set OPENAI_KEY=<your token>`": "Veuillez définir votre clé API OpenAI via `ai config set OPENAI_KEY=<your token>`",
+  "Please set your AI API key via `ai config set AI_API_KEY=<your token>`": "Veuillez définir votre clé API AI via `ai config set AI_API_KEY=<your token>`",
   "Set config": "Configurer",
-  "Enter your OpenAI API key": "Entrez votre clé API OpenAI",
+  "Enter your AI API key": "Entrez votre clé API AI",
   "(not set)": "(non défini)",
-  "OpenAI Key": "Clé OpenAI",
+  "AI API Key": "Clé API AI",
   "Please enter a key": "Veuillez entrer une clé",
-  "OpenAI API Endpoint": "Point de terminaison de l'API OpenAI",
-  "Enter your OpenAI API Endpoint": "Entrez votre point de terminaison d'API OpenAI",
+  "AI API Endpoint": "Point de terminaison de l'API AI",
+  "Enter your AI API Endpoint": "Entrez votre point de terminaison d'API AI",
   "Silent Mode": "Mode silencieux",
   "Enable silent mode?": "Activer le mode silencieux?",
   "Model": "Modèle",
@@ -54,5 +54,7 @@
   "Missing required parameter": "Paramètre requis manquant",
   "Please open a Bug report with the information above": "Veuillez ouvrir un rapport de bogue avec les informations ci-dessus",
   "Prompt to run": "Invite pour exécuter",
-  "You": "Vous"
+  "You": "Vous",
+  "AI Provider": "Fournisseur d'IA",
+  "Select your AI Provider": "Sélectionnez votre fournisseur d'IA"
 }

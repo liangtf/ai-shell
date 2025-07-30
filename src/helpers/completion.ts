@@ -4,6 +4,7 @@ import {
   ChatCompletionRequestMessage,
   Model,
 } from 'openai';
+import Anthropic from '@anthropic-ai/sdk';
 import dedent from 'dedent';
 import { IncomingMessage } from 'http';
 import { KnownError } from './error';
@@ -14,7 +15,6 @@ import { streamToString } from './stream-to-string';
 import './replace-all-polyfill';
 import i18n from './i18n';
 import { stripRegexPatterns } from './strip-regex-patterns';
-import readline from 'readline';
 
 const explainInSecondRequest = true;
 
@@ -25,20 +25,29 @@ function getOpenAi(key: string, apiEndpoint: string) {
   return openAi;
 }
 
-// Openai outputs markdown format for code blocks. It oftne uses
-// a github style like: "```bash"
-const shellCodeExclusions = [/```[a-zA-Z]*\n/gi, /```[a-zA-Z]*/gi, '\n'];
+function getAnthropic(key: string, apiEndpoint?: string) {
+  const client = new Anthropic({
+    apiKey: key,
+    baseURL: apiEndpoint && apiEndpoint !== 'https://api.openai.com/v1' && apiEndpoint !== 'https://api.anthropic.com' ? apiEndpoint : undefined,
+  });
+  return client;
+}
+
+// AI outputs markdown format for code blocks. Handle both with and without language specifiers
+const shellCodeExclusions = [/```[a-zA-Z]*\n*/gi, /```[a-zA-Z]*/gi, /```/gi, '\n'];
 
 export async function getScriptAndInfo({
   prompt,
   key,
   model,
   apiEndpoint,
+  provider = 'openai',
 }: {
   prompt: string;
   key: string;
   model?: string;
   apiEndpoint: string;
+  provider?: 'openai' | 'anthropic';
 }) {
   const fullPrompt = getFullPrompt(prompt);
   const stream = await generateCompletion({
@@ -47,6 +56,7 @@ export async function getScriptAndInfo({
     key,
     model,
     apiEndpoint,
+    provider,
   });
   const iterableStream = streamToIterable(stream);
   return {
@@ -61,18 +71,26 @@ export async function generateCompletion({
   key,
   model,
   apiEndpoint,
+  provider = 'openai',
 }: {
   prompt: string | ChatCompletionRequestMessage[];
   number?: number;
   model?: string;
   key: string;
   apiEndpoint: string;
+  provider?: 'openai' | 'anthropic';
 }) {
+  if (provider === 'anthropic') {
+    return generateAnthropicCompletion({ prompt, key, model, apiEndpoint });
+  }
+  
   const openAi = getOpenAi(key, apiEndpoint);
+  const selectedModel = model || 'gpt-4o-mini';
+  
   try {
     const completion = await openAi.createChatCompletion(
       {
-        model: model || 'gpt-4o-mini',
+        model: selectedModel,
         messages: Array.isArray(prompt)
           ? prompt
           : [{ role: 'user', content: prompt }],
@@ -136,16 +154,77 @@ export async function generateCompletion({
   }
 }
 
+async function generateAnthropicCompletion({
+  prompt,
+  key,
+  model,
+  apiEndpoint,
+}: {
+  prompt: string | ChatCompletionRequestMessage[];
+  key: string;
+  model?: string;
+  apiEndpoint: string;
+}) {
+  const client = getAnthropic(key, apiEndpoint);
+  
+  try {
+    const messages = Array.isArray(prompt)
+      ? prompt.map(msg => ({ role: msg.role as 'user' | 'assistant', content: msg.content }))
+      : [{ role: 'user' as const, content: prompt }];
+
+    const selectedModel = model || 'claude-sonnet-4-20250514';
+
+    const stream = client.messages.stream({
+      model: selectedModel,
+      max_tokens: 1024,
+      messages,
+    });
+
+    // Convert Anthropic stream to Node.js readable stream format
+    const { Readable } = await import('stream');
+    const nodeStream = new Readable({ read() {} });
+    
+    (async () => {
+      try {
+        for await (const event of stream) {
+          if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
+            const chunk = `data: ${JSON.stringify({
+              choices: [{
+                delta: {
+                  content: event.delta.text
+                }
+              }]
+            })}\n\n`;
+            nodeStream.push(chunk);
+          }
+        }
+        nodeStream.push('data: [DONE]\n\n');
+        nodeStream.push(null);
+      } catch (error) {
+        nodeStream.destroy(error as Error);
+      }
+    })();
+
+    return nodeStream as unknown as IncomingMessage;
+  } catch (err) {
+    throw new KnownError(
+      `Request to Anthropic failed: ${err instanceof Error ? err.message : 'Unknown error'}`
+    );
+  }
+}
+
 export async function getExplanation({
   script,
   key,
   model,
   apiEndpoint,
+  provider = 'openai',
 }: {
   script: string;
   key: string;
   model?: string;
   apiEndpoint: string;
+  provider?: 'openai' | 'anthropic';
 }) {
   const prompt = getExplanationPrompt(script);
   const stream = await generateCompletion({
@@ -154,6 +233,7 @@ export async function getExplanation({
     number: 1,
     model,
     apiEndpoint,
+    provider,
   });
   const iterableStream = streamToIterable(stream);
   return { readExplanation: readData(iterableStream) };
@@ -165,12 +245,14 @@ export async function getRevision({
   key,
   model,
   apiEndpoint,
+  provider = 'openai',
 }: {
   prompt: string;
   code: string;
   key: string;
   model?: string;
   apiEndpoint: string;
+  provider?: 'openai' | 'anthropic';
 }) {
   const fullPrompt = getRevisionPrompt(prompt, code);
   const stream = await generateCompletion({
@@ -179,6 +261,7 @@ export async function getRevision({
     number: 1,
     model,
     apiEndpoint,
+    provider,
   });
   const iterableStream = streamToIterable(stream);
   return {
@@ -202,17 +285,16 @@ export const readData =
       const [excludedPrefix] = excluded;
       const stopTextStreamKeys = ['q', 'escape']; //Group of keys that stop the text stream
 
-      const rl = readline.createInterface({
-        input: process.stdin,
-      });
-
-      process.stdin.setRawMode(true);
-
-      process.stdin.on('keypress', (key, data) => {
-        if (stopTextStreamKeys.includes(data.name)) {
-          stopTextStream = true;
-        }
-      });
+      // Only set raw mode if it's available (not available in all environments)
+      if (process.stdin.isTTY && typeof process.stdin.setRawMode === 'function') {
+        process.stdin.setRawMode(true);
+        
+        process.stdin.on('keypress', (_, data) => {
+          if (stopTextStreamKeys.includes(data.name)) {
+            stopTextStream = true;
+          }
+        });
+      }
       for await (const chunk of iterableStream) {
         const payloads = chunk.toString().split('\n\n');
         for (const payload of payloads) {
@@ -321,8 +403,18 @@ function getRevisionPrompt(prompt: string, code: string) {
 
 export async function getModels(
   key: string,
-  apiEndpoint: string
+  apiEndpoint: string,
+  provider: 'openai' | 'anthropic' = 'openai'
 ): Promise<Model[]> {
+  if (provider === 'anthropic') {
+    // Return predefined Anthropic models since they don't have a list endpoint
+    return [
+      { id: 'claude-3-5-sonnet-20241022', object: 'model' },
+      { id: 'claude-3-haiku-20240307', object: 'model' },
+      { id: 'claude-3-opus-20240229', object: 'model' },
+    ] as Model[];
+  }
+  
   const openAi = getOpenAi(key, apiEndpoint);
   const response = await openAi.listModels();
 

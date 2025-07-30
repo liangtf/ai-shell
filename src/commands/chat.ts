@@ -17,13 +17,15 @@ export default command(
   },
   async () => {
     const {
-      OPENAI_KEY: key,
-      OPENAI_API_ENDPOINT: apiEndpoint,
+      AI_API_KEY: key,
+      AI_API_ENDPOINT: apiEndpoint,
       MODEL: model,
+      AI_PROVIDER: provider,
     } = await getConfig();
     const chatHistory: ChatCompletionRequestMessage[] = [];
 
     console.log('');
+    console.log(`🤖 Chat Provider: ${provider}, Model: ${model}`);
     intro(i18n.t('Starting new conversation'));
     const prompt = async () => {
       const msgYou = `${i18n.t('You')}:`;
@@ -51,6 +53,7 @@ export default command(
         key,
         model,
         apiEndpoint,
+        provider,
       });
 
       infoSpin.stop(`${green('AI Shell:')}`);
@@ -77,12 +80,14 @@ async function getResponse({
   key,
   model,
   apiEndpoint,
+  provider = 'openai',
 }: {
   prompt: string | ChatCompletionRequestMessage[];
   number?: number;
   model?: string;
   key: string;
   apiEndpoint: string;
+  provider?: 'openai' | 'anthropic';
 }) {
   const stream = await generateCompletion({
     prompt,
@@ -90,6 +95,7 @@ async function getResponse({
     model,
     number,
     apiEndpoint,
+    provider,
   });
 
   const iterableStream = streamToIterable(stream);

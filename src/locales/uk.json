@@ -4,14 +4,14 @@
   "send a message ('exit' to quit)": "надіслати повідомлення ('вихід', щоб вийти)",
   "Please enter a prompt.": "Будь ласка, введіть запитання.",
   "THINKING...": "ДУМАЮ...",
-  "Please set your OpenAI API key via `ai config set OPENAI_KEY=<your token>`": "Будь ласка, встановіть свій ключ OpenAI API через `ai config set OPENAI_KEY=<your token>`",
+  "Please set your AI API key via `ai config set AI_API_KEY=<your token>`": "Будь ласка, встановіть свій ключ AI API через `ai config set AI_API_KEY=<your token>`",
   "Set config": "Встановити конфігурацію",
-  "Enter your OpenAI API key": "Введіть свій ключ OpenAI API",
+  "Enter your AI API key": "Введіть свій ключ AI API",
   "(not set)": "(не встановлено)",
-  "OpenAI Key": "Ключ OpenAI",
+  "AI API Key": "Ключ AI API",
   "Please enter a key": "Будь ласка, введіть ключ",
-  "OpenAI API Endpoint": "Кінцева точка OpenAI API",
-  "Enter your OpenAI API Endpoint": "Введіть кінцеву точку OpenAI API",
+  "AI API Endpoint": "Кінцева точка AI API",
+  "Enter your AI API Endpoint": "Введіть кінцеву точку AI API",
   "Silent Mode": "Тихий режим",
   "Enable silent mode?": "Увімкнути тихий режим?",
   "Model": "Модель",
@@ -54,5 +54,7 @@
   "Missing required parameter": "Відсутній обов'язковий параметр",
   "Please open a Bug report with the information above": "Будь ласка, відкрийте звіт про помилку з інформацією вище",
   "Prompt to run": "Запит на запуск",
-  "You": "Ви"
+  "You": "Ви",
+  "AI Provider": "Постачальник ШІ",
+  "Select your AI Provider": "Оберіть постачальника ШІ"
 }

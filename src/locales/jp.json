@@ -4,14 +4,14 @@
   "send a message ('exit' to quit)": "メッセージを送信する（終了するには 'exit'）",
   "Please enter a prompt.": "プロンプトを入力してください。",
   "THINKING...": "考え中...",
-  "Please set your OpenAI API key via `ai config set OPENAI_KEY=<your token>`": "OpenAI APIキーを `ai config set OPENAI_KEY=<your token>` で設定してください",
+  "Please set your AI API key via `ai config set AI_API_KEY=<your token>`": "AI APIキーを `ai config set AI_API_KEY=<your token>` で設定してください",
   "Set config": "設定",
-  "Enter your OpenAI API key": "OpenAI APIキーを入力してください",
+  "Enter your AI API key": "AI APIキーを入力してください",
   "(not set)": "(未設定)",
-  "OpenAI Key": "OpenAIキー",
+  "AI API Key": "AI APIキー",
   "Please enter a key": "キーを入力してください",
-  "OpenAI API Endpoint": "OpenAI APIエンドポイント",
-  "Enter your OpenAI API Endpoint": "OpenAI APIエンドポイントを入力してください",
+  "AI API Endpoint": "AI APIエンドポイント",
+  "Enter your AI API Endpoint": "AI APIエンドポイントを入力してください",
   "Silent Mode": "サイレントモード",
   "Enable silent mode?": "サイレントモードを有効にしますか？",
   "Model": "モデル",
@@ -54,5 +54,7 @@
   "Missing required parameter": "必要なパラメーターがありません",
   "Please open a Bug report with the information above": "上記の情報を含めてバグレポートを開いてください",
   "Prompt to run": "実行するプロンプト",
-  "You": "あなた"
+  "You": "あなた",
+  "AI Provider": "AIプロバイダー",
+  "Select your AI Provider": "AIプロバイダーを選択してください"
 }

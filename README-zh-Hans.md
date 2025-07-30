@@ -41,7 +41,7 @@
 3. 设置密钥以便 ai-shell 可以使用它：
 
    ```sh
-   ai config set OPENAI_KEY=<your token>
+   ai config set AI_API_KEY=<your token>
    ```
 
    这将在您的主目录中创建一个名为 `.ai-shell` 的文件。
